@@ -1,0 +1,45 @@
+{
+  "name": "twitter-like-app-clean-architecture",
+  "version": "1.0.0",
+  "description": "",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/pirosikick/twitter-like-app-clean-architecture.git"
+  },
+  "author": "",
+  "license": "MIT",
+  "bugs": {
+    "url": "https://github.com/pirosikick/twitter-like-app-clean-architecture/issues"
+  },
+  "homepage": "https://github.com/pirosikick/twitter-like-app-clean-architecture#readme",
+  "devDependencies": {
+    "@types/jest": "^23.3.9",
+    "husky": "^1.2.0",
+    "lint-staged": "^8.1.0",
+    "prettier": "^1.15.2",
+    "ts-jest": "^23.10.5",
+    "tslint": "^5.11.0",
+    "tslint-config-prettier": "^1.16.0",
+    "typescript": "^3.1.6"
+  },
+  "husky": {
+    "hooks": {
+      "pre-commit": "lint-staged"
+    }
+  },
+  "lint-staged": {
+    "*.{ts,tsx}": [
+      "tslint --fix",
+      "prettier --write",
+      "git add"
+    ],
+    "*.{js,json,md}": [
+      "prettier --write",
+      "git add"
+    ]
+  }
+}
