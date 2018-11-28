@@ -1,31 +1,47 @@
 export interface User {
   id: string;
-  displayName: string;
+  name: string;
+  fullName: string;
+  bio: string;
+  createdAt: Date;
+}
+
+export function isUserNameValid(name: string) {
+  return /^[a-zA-Z0-9_]+$/.test(name);
+}
+
+export function isUserFullNameValid(fullName: string) {
+  return !!fullName;
 }
 
 export interface Tweet {
   id: string;
-  text: string;
   userId: string;
-  tweetedAt: Date;
+  text: string;
+  createdAt: Date;
+}
+
+export function isTweetTextValid(tweetText: string): boolean {
+  return tweetText.length > 0 && tweetText.length <= 140;
 }
 
 export interface Retweet {
+  id: string;
   userId: string;
-  tweetId: string;
-  retweetedAt: Date;
+  tweet: Tweet;
+  createdAt: Date;
 }
 
-export interface Fav {
-  tweetId: string;
+export interface TimelineItem {
+  id: string;
   userId: string;
-  favAt: Date;
+  text: string;
+  createdAt: Date;
+  isRetweet: boolean;
 }
 
-export function isUserDisplayNameValid(displayName: string) {
-  return !!displayName;
-}
-
-export function isTweetTextValid(tweetText: string) {
-  return tweetText.length <= 140;
+export interface Favorite {
+  userId: string;
+  tweet: Tweet;
+  createdAt: Date;
 }
