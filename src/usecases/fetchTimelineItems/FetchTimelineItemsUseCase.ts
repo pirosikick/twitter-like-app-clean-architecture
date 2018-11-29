@@ -1,10 +1,19 @@
 import FetchTimelineItemsDataAccess from './FetchTimelineItemsDataAccess';
 import FetchTimelineItemsDataAccessError from './FetchTimelineItemsDataAccessError';
+import { User } from 'entities';
+import UserNotExists from './UserNotExists';
 
 interface FetchTimelineItemsOutput {
+  user: {
+    id: string;
+    name: string;
+    fullName: string;
+    bio: string;
+    createdAt: Date;
+  };
   timelineItems: Array<{
     id: string;
-    userId: string;
+    user: User;
     text: string;
     createdAt: Date;
     isRetweet: boolean;
@@ -19,11 +28,26 @@ export default class FetchTimelineItemsUseCase {
   }
 
   public async fetchTimeline(
-    userId: string
+    userName: string
   ): Promise<FetchTimelineItemsOutput> {
+    let user;
+    try {
+      user = await this.dataAccess.findUserByName(userName);
+    } catch (cause) {
+      throw new FetchTimelineItemsDataAccessError(
+        cause,
+        `faield to find user by name: userName="${userName}"`
+      );
+    }
+
+    if (!user) {
+      throw new UserNotExists();
+    }
+
     try {
       return {
-        timelineItems: await this.dataAccess.fetchTimelineItems(userId)
+        user,
+        timelineItems: await this.dataAccess.fetchTimelineItems(user.id)
       };
     } catch (cause) {
       throw new FetchTimelineItemsDataAccessError(

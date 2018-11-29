@@ -17,7 +17,9 @@
   },
   "homepage": "https://github.com/pirosikick/twitter-like-app-clean-architecture#readme",
   "devDependencies": {
+    "@types/handlebars": "^4.0.39",
     "@types/jest": "^23.3.9",
+    "@types/uuid": "^3.4.4",
     "husky": "^1.2.0",
     "jest": "^23.6.0",
     "lint-staged": "^8.1.0",
@@ -42,5 +44,9 @@
       "prettier --write",
       "git add"
     ]
+  },
+  "dependencies": {
+    "handlebars": "^4.0.12",
+    "uuid": "^3.3.2"
   }
 }

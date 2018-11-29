@@ -16,7 +16,7 @@ export function isUserFullNameValid(fullName: string) {
 
 export interface Tweet {
   id: string;
-  userId: string;
+  user: User;
   text: string;
   createdAt: Date;
 }
@@ -27,21 +27,21 @@ export function isTweetTextValid(tweetText: string): boolean {
 
 export interface Retweet {
   id: string;
-  userId: string;
+  user: User;
   tweet: Tweet;
   createdAt: Date;
 }
 
 export interface TimelineItem {
   id: string;
-  userId: string;
+  user: User;
   text: string;
   createdAt: Date;
   isRetweet: boolean;
 }
 
 export interface Favorite {
-  userId: string;
+  user: User;
   tweet: Tweet;
   createdAt: Date;
 }

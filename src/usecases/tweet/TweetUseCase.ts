@@ -1,22 +1,28 @@
 // usecases/tweet/UseCase.ts
 import { isTweetTextValid, Tweet } from 'entities';
-import DataAccess from './DataAccess';
-import DataAccessError from './DataAccessError';
+import TweetDataAccess from './TweetDataAccess';
+import TweetDataAccessError from './TweetDataAccessError';
 import InvalidTweetText from './InvalidTweetText';
 
 interface TweetOutput {
   tweet: {
     id: string;
-    userId: string;
+    user: {
+      id: string;
+      name: string;
+      fullName: string;
+      bio: string;
+      createdAt: Date;
+    };
     text: string;
     createdAt: Date;
   };
 }
 
 export default class TweetUseCase {
-  private dataAccess: DataAccess;
+  private dataAccess: TweetDataAccess;
 
-  constructor(dataAccess: DataAccess) {
+  constructor(dataAccess: TweetDataAccess) {
     this.dataAccess = dataAccess;
   }
 
@@ -29,7 +35,7 @@ export default class TweetUseCase {
       const tweet = await this.dataAccess.createTweet(userId, text);
       return { tweet };
     } catch (cause) {
-      throw new DataAccessError(cause, 'failed to create tweet');
+      throw new TweetDataAccessError(cause, 'failed to create tweet');
     }
   }
 }

@@ -4,10 +4,22 @@ import RetweetDataAccessError from './RetweetDataAccessError';
 interface RetweetOutput {
   retweet: {
     id: string;
-    userId: string;
+    user: {
+      id: string;
+      name: string;
+      fullName: string;
+      bio: string;
+      createdAt: Date;
+    };
     tweet: {
       id: string;
-      userId: string;
+      user: {
+        id: string;
+        name: string;
+        fullName: string;
+        bio: string;
+        createdAt: Date;
+      };
       text: string;
       createdAt: Date;
     };
