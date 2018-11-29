@@ -1,3 +1,3 @@
 export default interface View {
-  render: () => string;
+  html(): string;
 }
