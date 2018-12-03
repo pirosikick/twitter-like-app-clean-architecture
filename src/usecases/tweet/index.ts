@@ -1,4 +1,4 @@
 export { default as InvalidTweetText } from './InvalidTweetText';
-export { default as TweetDataAccess } from './TweetDataAccess';
-export { default as TweetDataAccessError } from './TweetDataAccessError';
-export { default as TweetUseCase } from './TweetUseCase';
+export { default as DataAccess } from './DataAccess';
+export { default as DataAccessError } from './DataAccessError';
+export { default as Interactor } from './Interactor';

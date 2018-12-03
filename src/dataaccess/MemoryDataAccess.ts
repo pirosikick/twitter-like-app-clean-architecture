@@ -2,6 +2,7 @@ import * as entities from 'entities';
 import * as usecases from 'usecases';
 import uuid from 'uuid/v4';
 
+// エンティティと実際に保存するデータのフォーマットが違う
 interface Tweet {
   id: string;
   userId: string;
@@ -15,32 +16,24 @@ interface Retweet {
   createdAt: Date;
 }
 
-export default class MemoryGateway implements usecases.DataAccess {
+export default class MemoryDataAccess
+  implements
+    usecases.tweet.DataAccess,
+    usecases.retweet.DataAccess,
+    usecases.showTimeline.DataAccess,
+    usecases.createUser.DataAccess {
   private users: entities.User[] = [];
-  private userCredentials: Array<{ userId: string; password: string }> = [];
   private tweets: Tweet[] = [];
   private retweets: Retweet[] = [];
 
-  public createUser(
-    name: string,
-    fullName: string,
-    bio: string,
-    password: string
-  ): Promise<entities.User> {
+  public createUser(name: string): Promise<entities.User> {
     const user = {
       id: uuid(),
       name,
-      fullName,
-      bio,
       createdAt: new Date()
-    };
-    const userCredential = {
-      userId: user.id,
-      password
     };
 
     this.users.push(user);
-    this.userCredentials.push(userCredential);
     return Promise.resolve(user);
   }
 
@@ -52,20 +45,6 @@ export default class MemoryGateway implements usecases.DataAccess {
   public findUserByName(name: string): Promise<entities.User | null> {
     const user = this.users.find(u => u.name === name);
     return Promise.resolve(user || null);
-  }
-
-  public isUserPasswordCorrect(
-    userName: string,
-    password: string
-  ): Promise<boolean> {
-    const user = this.users.find(u => u.name === userName);
-    if (!user) {
-      return Promise.resolve(false);
-    }
-
-    const credential = this.userCredentials.find(c => c.userId === user.id);
-    const correct = !!credential && credential.password === password;
-    return Promise.resolve(correct);
   }
 
   public createTweet(userId: string, text: string): Promise<entities.Tweet> {
@@ -100,22 +79,32 @@ export default class MemoryGateway implements usecases.DataAccess {
     return Promise.resolve({ id, user, tweet, createdAt });
   }
 
-  public fetchTimelineItems(userId: string): Promise<entities.TimelineItem[]> {
+  public readTimeline(userId: string): Promise<entities.Timeline> {
+    const user = this.users.find(u => u.id === userId);
+    if (!user) {
+      throw new Error(`use whose id is "${userId}" not exists`);
+    }
+
     const tweetItems = this.tweets.map(this.tweetToEntity).map(tweet => ({
-      ...tweet,
-      isRetweet: false
+      tweet,
+      retweeted: false
     }));
     const retweetItems = this.retweets
       .map(this.retweetToEntity)
       .map(retweet => ({
-        ...retweet.tweet,
-        isRetweet: false
+        tweet: retweet.tweet,
+        retweeted: false
       }));
-    const items = [...tweetItems, ...retweetItems].sort((a, b) =>
-      a.createdAt > b.createdAt ? -1 : a.createdAt < b.createdAt ? 1 : 0
-    );
+    const items = [...tweetItems, ...retweetItems].sort((a, b) => {
+      if (a.tweet.createdAt > b.tweet.createdAt) {
+        return -1;
+      } else if (a.tweet.createdAt < b.tweet.createdAt) {
+        return 1;
+      }
+      return 0;
+    });
 
-    return Promise.resolve(items);
+    return Promise.resolve({ user, items });
   }
 
   private tweetToEntity(tweet: Tweet): entities.Tweet {

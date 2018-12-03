@@ -1,17 +1,11 @@
 export interface User {
   id: string;
   name: string;
-  fullName: string;
-  bio: string;
   createdAt: Date;
 }
 
 export function isUserNameValid(name: string) {
   return /^[a-zA-Z0-9_]+$/.test(name);
-}
-
-export function isUserFullNameValid(fullName: string) {
-  return !!fullName;
 }
 
 export interface Tweet {
@@ -33,15 +27,11 @@ export interface Retweet {
 }
 
 export interface TimelineItem {
-  id: string;
-  user: User;
-  text: string;
-  createdAt: Date;
-  isRetweet: boolean;
+  tweet: Tweet;
+  retweeted: boolean;
 }
 
-export interface Favorite {
+export interface Timeline {
   user: User;
-  tweet: Tweet;
-  createdAt: Date;
+  items: TimelineItem[];
 }
