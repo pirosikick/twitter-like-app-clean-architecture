@@ -18,10 +18,12 @@ interface Retweet {
 
 export default class MemoryDataAccess
   implements
+    // ユースケースのDetaAccessを実装
     usecases.tweet.DataAccess,
     usecases.retweet.DataAccess,
-    usecases.showTimeline.DataAccess,
+    usecases.readTimeline.DataAccess,
     usecases.createUser.DataAccess {
+  // メモリ上（変数）にデータを保存
   private users: entities.User[] = [];
   private tweets: Tweet[] = [];
   private retweets: Retweet[] = [];

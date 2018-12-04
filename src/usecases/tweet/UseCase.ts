@@ -4,13 +4,13 @@ import DataAccessError from './DataAccessError';
 import InvalidTweetText from './InvalidTweetText';
 
 // ユースケースの入力データ
-interface InteractorInput {
+export interface TweetInput {
   userId: string;
   text: string;
 }
 
 // ユースケースの出力データ
-interface InteractorOutput {
+export interface TweetOutput {
   tweet: {
     id: string;
     user: {
@@ -23,20 +23,20 @@ interface InteractorOutput {
   };
 }
 
-export default class TweetInteractor {
+export default class TweetUseCase {
   private dataAccess: DataAccess;
 
   constructor(dataAccess: DataAccess) {
     this.dataAccess = dataAccess;
   }
 
-  public async tweet(userId: string, text: string): Promise<InteractorOutput> {
-    if (!isTweetTextValid(text)) {
+  public async tweet(input: TweetInput): Promise<TweetOutput> {
+    if (!isTweetTextValid(input.text)) {
       throw new InvalidTweetText();
     }
 
     try {
-      const tweet = await this.dataAccess.createTweet(userId, text);
+      const tweet = await this.dataAccess.createTweet(input.userId, input.text);
       return { tweet };
     } catch (cause) {
       throw new DataAccessError(cause, 'failed to create tweet');

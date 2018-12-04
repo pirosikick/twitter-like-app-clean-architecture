@@ -4,11 +4,11 @@ import CreateUserDataAccessError from './DataAccessError';
 import InvalidUserName from './InvalidUserName';
 import UserNameDuplicated from './UserNameDuplicated';
 
-interface CreateUserInteractorInput {
+interface CreateUserInput {
   userName: string;
 }
 
-interface CreateUserInteractorOutput {
+interface CreateUserOutput {
   user: {
     id: string;
     name: string;
@@ -16,12 +16,10 @@ interface CreateUserInteractorOutput {
   };
 }
 
-export default class CreateUserInteractor {
+export default class CreateUserUseCase {
   constructor(private dataAccess: CreateUserDataAccess) {}
 
-  public async createUser(
-    input: CreateUserInteractorInput
-  ): Promise<CreateUserInteractorOutput> {
+  public async createUser(input: CreateUserInput): Promise<CreateUserOutput> {
     if (!isUserNameValid(input.userName)) {
       throw new InvalidUserName();
     }

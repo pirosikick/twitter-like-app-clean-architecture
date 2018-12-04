@@ -1,12 +1,12 @@
 import DataAccess from './DataAccess';
 import DataAccessError from './DataAccessError';
 
-interface InteractorInput {
+export interface RetweetInput {
   userId: string;
   tweetId: string;
 }
 
-interface InteractorOutput {
+export interface RetweetOutput {
   retweet: {
     id: string;
     user: {
@@ -35,7 +35,7 @@ export default class RetweetUseCase {
     this.dataAccess = dataAccess;
   }
 
-  public async retweet(input: InteractorInput): Promise<InteractorOutput> {
+  public async retweet(input: RetweetInput): Promise<RetweetOutput> {
     try {
       const retweet = await this.dataAccess.createRetweet(
         input.userId,

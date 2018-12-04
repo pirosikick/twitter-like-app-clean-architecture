@@ -1,11 +1,11 @@
-import ShowTimelineDataAccess from './DataAccess';
-import ShowTimelineDataAccessError from './DataAccessError';
+import ReadTimelineDataAccess from './DataAccess';
+import ReadTimelineDataAccessError from './DataAccessError';
 import UserNotExists from './UserNotExists';
 
-interface ShowTimelineInteractorInput {
+export interface ReadTimelineInput {
   userName: string;
 }
-interface ShowTimelineInteractorOutput {
+export interface ReadTimelineOutput {
   user: {
     id: string;
     name: string;
@@ -28,17 +28,17 @@ interface ShowTimelineInteractorOutput {
   };
 }
 
-export default class ShowTimelineInteractor {
-  constructor(private dataAccess: ShowTimelineDataAccess) {}
+export default class ReadTimelineUseCase {
+  constructor(private dataAccess: ReadTimelineDataAccess) {}
 
-  public async showTimeline(
-    input: ShowTimelineInteractorInput
-  ): Promise<ShowTimelineInteractorOutput> {
+  public async readTimeline(
+    input: ReadTimelineInput
+  ): Promise<ReadTimelineOutput> {
     let user;
     try {
       user = await this.dataAccess.findUserByName(input.userName);
     } catch (cause) {
-      throw new ShowTimelineDataAccessError(
+      throw new ReadTimelineDataAccessError(
         cause,
         'failed to find user by name'
       );
@@ -52,7 +52,7 @@ export default class ShowTimelineInteractor {
       const timeline = await this.dataAccess.readTimeline(user.id);
       return { user, timeline };
     } catch (cause) {
-      throw new ShowTimelineDataAccessError(cause, 'failed to read timeline');
+      throw new ReadTimelineDataAccessError(cause, 'failed to read timeline');
     }
   }
 }
