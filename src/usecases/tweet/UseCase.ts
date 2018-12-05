@@ -1,4 +1,4 @@
-import { isTweetTextValid, Tweet } from 'entities';
+import { isTweetTextValid, Tweet } from '@pirosikick/entities';
 import DataAccess from './DataAccess';
 import DataAccessError from './DataAccessError';
 import InvalidTweetText from './InvalidTweetText';

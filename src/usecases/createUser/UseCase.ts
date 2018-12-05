@@ -1,4 +1,4 @@
-import { User, isUserNameValid } from 'entities';
+import { User, isUserNameValid } from '@pirosikick/entities';
 import CreateUserDataAccess from './DataAccess';
 import CreateUserDataAccessError from './DataAccessError';
 import InvalidUserName from './InvalidUserName';

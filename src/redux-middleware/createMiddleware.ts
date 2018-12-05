@@ -1,6 +1,6 @@
 import { Store, Middleware } from 'redux';
 import { getType, ActionType } from 'typesafe-actions';
-import * as usecases from 'usecases';
+import * as usecases from '@pirosikick/usecases';
 import * as actions from './actions';
 
 export type Action = ActionType<typeof actions>;

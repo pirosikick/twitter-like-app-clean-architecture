@@ -1,5 +1,5 @@
-import * as entities from 'entities';
-import * as usecases from 'usecases';
+import * as entities from '@pirosikick/entities';
+import * as usecases from '@pirosikick/usecases';
 import uuid from 'uuid/v4';
 
 // エンティティと実際に保存するデータのフォーマットが違う

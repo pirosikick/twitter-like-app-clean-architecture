@@ -1,4 +1,4 @@
-import { Tweet, User } from 'entities';
+import { Tweet, User } from '@pirosikick/entities';
 
 export default interface TweetDataAccess {
   findUserById(id: string): Promise<User | null>;

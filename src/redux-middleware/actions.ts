@@ -1,5 +1,5 @@
 import { action } from 'typesafe-actions';
-import * as usecases from 'usecases';
+import * as usecases from '@pirosikick/usecases';
 import { ActionTypes } from './types';
 
 export const tweet = (input: usecases.tweet.Input, callerId: string = '') =>

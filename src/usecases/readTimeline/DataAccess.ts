@@ -1,4 +1,4 @@
-import { Timeline, User } from 'entities';
+import { Timeline, User } from '@pirosikick/entities';
 
 export default interface ShowTimelineDataAccess {
   findUserByName(name: string): Promise<User | null>;
