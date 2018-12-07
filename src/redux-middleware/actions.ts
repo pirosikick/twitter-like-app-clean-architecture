@@ -1,51 +1,71 @@
-import { action } from 'typesafe-actions';
+import { createAction } from 'typesafe-actions';
 import * as usecases from '@pirosikick/usecases';
-import { ActionTypes } from './types';
+import ActionType from './ActionType';
 
-export const tweet = (input: usecases.tweet.Input, callerId: string = '') =>
-  action(ActionTypes.TWEET, { input, callerId });
+export const tweet = createAction(
+  ActionType.TWEET,
+  resolve => (input: usecases.tweet.Input, callerId: string = '') =>
+    resolve({ input, callerId })
+);
 
-export const finishedTweeting = (
-  output: usecases.tweet.Output,
-  callerId: string
-) => action(ActionTypes.FINISHED_TWEETING, { output, callerId });
+export const finishedTweeting = createAction(
+  ActionType.FINISHED_TWEETING,
+  resolve => (output: usecases.tweet.Output, callerId: string) =>
+    resolve({ output, callerId })
+);
 
-export const failedToTweet = (error: Error, callerId: string) =>
-  action(ActionTypes.FAILED_TO_TWEET, { error, callerId });
+export const failedToTweet = createAction(
+  ActionType.FAILED_TO_TWEET,
+  resolve => (error: Error, callerId: string) => resolve({ error, callerId })
+);
 
-export const retweet = (input: usecases.retweet.Input, callerId: string = '') =>
-  action(ActionTypes.RETWEET, { input, callerId });
+export const retweet = createAction(
+  ActionType.RETWEET,
+  resolve => (input: usecases.retweet.Input, callerId: string = '') =>
+    resolve({ input, callerId })
+);
 
-export const finishedRetweeting = (
-  output: usecases.retweet.Output,
-  callerId: string
-) => action(ActionTypes.FINISHED_RETWEETING, { output, callerId });
+export const finishedRetweeting = createAction(
+  ActionType.FINISHED_RETWEETING,
+  resolve => (output: usecases.retweet.Output, callerId: string) =>
+    resolve({ output, callerId })
+);
 
-export const failedToRetweet = (error: Error, callerId: string) =>
-  action(ActionTypes.FAILED_TO_RETWEET, { error, callerId });
+export const failedToRetweet = createAction(
+  ActionType.FAILED_TO_RETWEET,
+  resolve => (error: Error, callerId: string) => resolve({ error, callerId })
+);
 
-export const createUser = (
-  input: usecases.createUser.Input,
-  callerId: string = ''
-) => action(ActionTypes.CREATE_USER, { input, callerId });
+export const createUser = createAction(
+  ActionType.CREATE_USER,
+  resolve => (input: usecases.createUser.Input, callerId: string = '') =>
+    resolve({ input, callerId })
+);
 
-export const finishedCreatingUser = (
-  output: usecases.createUser.Output,
-  callerId: string
-) => action(ActionTypes.FINISHED_CREATING_USER, { output, callerId });
+export const finishedCreatingUser = createAction(
+  ActionType.FINISHED_CREATING_USER,
+  resolve => (output: usecases.createUser.Output, callerId: string) =>
+    resolve({ output, callerId })
+);
 
-export const failedToCreateUser = (error: Error, callerId: string) =>
-  action(ActionTypes.FAILED_TO_CREATE_USER, { error, callerId });
+export const failedToCreateUser = createAction(
+  ActionType.FAILED_TO_CREATE_USER,
+  resolve => (error: Error, callerId: string) => resolve({ error, callerId })
+);
 
-export const readTimeline = (
-  input: usecases.readTimeline.Input,
-  callerId: string = ''
-) => action(ActionTypes.READ_TIMELINE, { input, callerId });
+export const readTimeline = createAction(
+  ActionType.READ_TIMELINE,
+  resolve => (input: usecases.readTimeline.Input, callerId: string = '') =>
+    resolve({ input, callerId })
+);
 
-export const finishedReadingTimeline = (
-  output: usecases.readTimeline.Output,
-  callerId: string
-) => action(ActionTypes.FINISHED_READING_TIMELINE, { output, callerId });
+export const finishedReadingTimeline = createAction(
+  ActionType.FINISHED_READING_TIMELINE,
+  resolve => (output: usecases.readTimeline.Output, callerId: string) =>
+    resolve({ output, callerId })
+);
 
-export const failedToReadTimeline = (error: Error, callerId: string) =>
-  action(ActionTypes.FAILED_TO_READ_TIMELINE, { error, callerId });
+export const failedToReadTimeline = createAction(
+  ActionType.FAILED_TO_READ_TIMELINE,
+  resolve => (error: Error, callerId: string) => resolve({ error, callerId })
+);

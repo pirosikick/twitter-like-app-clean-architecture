@@ -1,6 +1,8 @@
-import { ActionType } from 'typesafe-actions';
+import { ActionType as IActionType } from 'typesafe-actions';
 import * as actions from './actions';
+import createMiddleware from './createMiddleware';
+import ActionType from './ActionType';
 
-export type Action = ActionType<typeof actions>;
+type Action = IActionType<typeof actions>;
 
-export { default as createMiddleware } from './createMiddleware';
+export { actions, createMiddleware, Action, ActionType };

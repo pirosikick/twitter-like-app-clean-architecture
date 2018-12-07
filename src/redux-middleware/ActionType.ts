@@ -1,4 +1,4 @@
-export const enum ActionTypes {
+enum ActionType {
   READ_TIMELINE = 'usecases/READ_TIMELINE',
   FINISHED_READING_TIMELINE = 'usecases/FINISHED_READING_TIMELINE',
   FAILED_TO_READ_TIMELINE = 'usecases/FAILED_TO_READ_TIMELINE',
@@ -12,3 +12,5 @@ export const enum ActionTypes {
   FINISHED_RETWEETING = 'usecases/FINISHED_RETWHEETING',
   FAILED_TO_RETWEET = 'usecases/FAILED_TO_RETWEET'
 }
+
+export default ActionType;

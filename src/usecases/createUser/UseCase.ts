@@ -4,11 +4,11 @@ import CreateUserDataAccessError from './DataAccessError';
 import InvalidUserName from './InvalidUserName';
 import UserNameDuplicated from './UserNameDuplicated';
 
-interface CreateUserInput {
+export interface CreateUserInput {
   userName: string;
 }
 
-interface CreateUserOutput {
+export interface CreateUserOutput {
   user: {
     id: string;
     name: string;
@@ -36,7 +36,7 @@ export default class CreateUserUseCase {
     }
 
     try {
-      const newUser = await this.dataAccess.createUser(name);
+      const newUser = await this.dataAccess.createUser(input.userName);
       return { user: newUser };
     } catch (cause) {
       throw new CreateUserDataAccessError(cause, 'failed to create user');
