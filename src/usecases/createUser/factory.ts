@@ -1,4 +1,4 @@
-import { User, isUserNameValid } from '@pirosikick/entities';
+import { IUser, isUserNameValid } from '@pirosikick/entities';
 import { ICreateUserFactory } from './interface';
 import DataAccessError from './DataAccessError';
 import InvalidUserName from './InvalidUserName';
@@ -10,7 +10,7 @@ const createUserFactory: ICreateUserFactory = dataAccess => {
       throw new InvalidUserName();
     }
 
-    let user: User | null;
+    let user: IUser | null;
     try {
       user = await dataAccess.findUserByName(input.userName);
     } catch (cause) {

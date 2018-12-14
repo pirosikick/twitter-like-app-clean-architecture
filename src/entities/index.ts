@@ -1,4 +1,4 @@
-export interface User {
+export interface IUser {
   id: string;
   name: string;
   createdAt: Date;
@@ -8,9 +8,9 @@ export function isUserNameValid(name: string) {
   return /^[a-zA-Z0-9_]+$/.test(name);
 }
 
-export interface Tweet {
+export interface ITweet {
   id: string;
-  user: User;
+  userId: string;
   text: string;
   createdAt: Date;
 }
@@ -19,19 +19,20 @@ export function isTweetTextValid(tweetText: string): boolean {
   return tweetText.length > 0 && tweetText.length <= 140;
 }
 
-export interface Retweet {
+export interface IRetweet {
   id: string;
-  user: User;
-  tweet: Tweet;
+  userId: string;
+  tweetId: string;
   createdAt: Date;
 }
 
-export interface TimelineItem {
-  tweet: Tweet;
-  retweeted: boolean;
-}
-
-export interface Timeline {
-  user: User;
-  items: TimelineItem[];
-}
+// export interface ITimelineItem {
+//   tweet: ITweet;
+//   retweeted: boolean;
+// }
+//
+// export interface ITimeline {
+//   user: IUser;
+//   items: ITimelineItem[];
+// }
+//

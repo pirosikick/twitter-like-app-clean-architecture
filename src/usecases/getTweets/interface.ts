@@ -1,8 +1,8 @@
-import { Tweet } from '@pirosikick/entities';
+import { ITweet } from '@pirosikick/entities';
 import { IUseCase, IUseCaseFactory } from '../interface';
 
 export interface IDataAccess {
-  findTweetsByUserName(userName: string): Promise<Tweet[]>;
+  findTweetsByUserName(userName: string): Promise<ITweet[]>;
 }
 
 export interface IGetTweetsInput {
@@ -12,11 +12,7 @@ export interface IGetTweetsInput {
 export interface IGetTweetsOutput {
   tweets: Array<{
     id: string;
-    user: {
-      id: string;
-      name: string;
-      createdAt: Date;
-    };
+    userId: string;
     text: string;
     createdAt: Date;
   }>;

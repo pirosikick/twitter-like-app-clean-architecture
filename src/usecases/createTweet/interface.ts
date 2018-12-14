@@ -1,9 +1,9 @@
-import { Tweet, User } from '@pirosikick/entities';
+import { ITweet, IUser } from '@pirosikick/entities';
 import { IUseCase, IUseCaseFactory } from '../interface';
 
 export interface IDataAccess {
-  findUserById(id: string): Promise<User | null>;
-  createTweet(userId: string, text: string): Promise<Tweet>;
+  findUserById(id: string): Promise<IUser | null>;
+  createTweet(userId: string, text: string): Promise<ITweet>;
 }
 
 // ユースケースの入力データ
@@ -16,11 +16,12 @@ export interface ICreateTweetInput {
 export interface ICreateTweetOutput {
   tweet: {
     id: string;
-    user: {
-      id: string;
-      name: string;
-      createdAt: Date;
-    };
+    userId: string;
+    // user: {
+    //   id: string;
+    //   name: string;
+    //   createdAt: Date;
+    // };
     text: string;
     createdAt: Date;
   };

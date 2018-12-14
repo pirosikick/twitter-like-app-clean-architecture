@@ -2,33 +2,19 @@ import * as entities from '@pirosikick/entities';
 import * as usecases from '@pirosikick/usecases';
 import uuid from 'uuid/v4';
 
-// エンティティと実際に保存するデータのフォーマットが違う
-interface Tweet {
-  id: string;
-  userId: string;
-  text: string;
-  createdAt: Date;
-}
-interface Retweet {
-  id: string;
-  userId: string;
-  tweetId: string;
-  createdAt: Date;
-}
-
 export default class MemoryDataAccess
   implements
     // ユースケースのDetaAccessを実装
-    usecases.tweet.DataAccess,
-    usecases.retweet.DataAccess,
-    usecases.readTimeline.DataAccess,
-    usecases.createUser.DataAccess {
+    usecases.createTweet.IDataAccess,
+    usecases.createRetweet.IDataAccess,
+    usecases.getTweets.IDataAccess,
+    usecases.createUser.IDataAccess {
   // メモリ上（変数）にデータを保存
-  private users: entities.User[] = [];
-  private tweets: Tweet[] = [];
-  private retweets: Retweet[] = [];
+  private users: entities.IUser[] = [];
+  private tweets: entities.ITweet[] = [];
+  private retweets: entities.IRetweet[] = [];
 
-  public createUser(name: string): Promise<entities.User> {
+  public createUser(name: string): Promise<entities.IUser> {
     const user = {
       id: uuid(),
       name,
@@ -39,32 +25,36 @@ export default class MemoryDataAccess
     return Promise.resolve(user);
   }
 
-  public findUserById(id: string): Promise<entities.User | null> {
+  public findUserById(id: string): Promise<entities.IUser | null> {
     const user = this.users.find(u => u.id === id);
     return Promise.resolve(user || null);
   }
 
-  public findUserByName(name: string): Promise<entities.User | null> {
+  public findUserByName(name: string): Promise<entities.IUser | null> {
     const user = this.users.find(u => u.name === name);
     return Promise.resolve(user || null);
   }
 
-  public createTweet(userId: string, text: string): Promise<entities.Tweet> {
+  public createTweet(userId: string, text: string): Promise<entities.ITweet> {
     const user = this.users.find(u => u.id === userId);
     if (!user) {
       throw new Error(`user whose id is "${userId}" not exists`);
     }
 
-    const id = uuid();
-    const createdAt = new Date();
-    this.tweets.push({ id, text, userId: user.id, createdAt });
-    return Promise.resolve({ id, text, user, createdAt });
+    const tweet = {
+      id: uuid(),
+      userId: user.id,
+      text,
+      createdAt: new Date()
+    };
+    this.tweets.push(tweet);
+    return Promise.resolve(tweet);
   }
 
   public createRetweet(
     userId: string,
     tweetId: string
-  ): Promise<entities.Retweet> {
+  ): Promise<entities.IRetweet> {
     const user = this.users.find(u => u.id === userId);
     if (!user) {
       throw new Error(`user whose id is "${userId}" not exists`);
@@ -77,73 +67,29 @@ export default class MemoryDataAccess
 
     const id = uuid();
     const createdAt = new Date();
-    this.retweets.push({ id, userId: user.id, tweetId: tweet.id, createdAt });
-    return Promise.resolve({ id, user, tweet, createdAt });
-  }
-
-  public readTimeline(userId: string): Promise<entities.Timeline> {
-    const user = this.users.find(u => u.id === userId);
-    if (!user) {
-      throw new Error(`use whose id is "${userId}" not exists`);
-    }
-
-    const tweetItems = this.tweets.map(this.tweetToEntity).map(tweet => ({
-      tweet,
-      retweeted: false
-    }));
-    const retweetItems = this.retweets
-      .map(this.retweetToEntity)
-      .map(retweet => ({
-        tweet: retweet.tweet,
-        retweeted: false
-      }));
-    const items = [...tweetItems, ...retweetItems].sort((a, b) => {
-      if (a.tweet.createdAt > b.tweet.createdAt) {
-        return -1;
-      } else if (a.tweet.createdAt < b.tweet.createdAt) {
-        return 1;
-      }
-      return 0;
-    });
-
-    return Promise.resolve({ user, items });
-  }
-
-  private tweetToEntity(tweet: Tweet): entities.Tweet {
-    const user = this.users.find(u => u.id === tweet.userId);
-    if (!user) {
-      throw new Error(`invalid tweet(id="${tweet.id}"): user not exists`);
-    }
-
-    return {
-      id: tweet.id,
-      user,
-      text: tweet.text,
-      createdAt: tweet.createdAt
+    const retweet = {
+      id: uuid(),
+      userId: user.id,
+      tweetId: tweet.id,
+      createdAt: new Date()
     };
+    this.retweets.push(retweet);
+    return Promise.resolve(retweet);
   }
 
-  private retweetToEntity(retweet: Retweet): entities.Retweet {
-    const user = this.users.find(u => u.id === retweet.userId);
+  public findTweetsByUserName(userName: string): Promise<entities.ITweet[]> {
+    const user = this.users.find(u => u.name === userName);
     if (!user) {
-      throw new Error(`invalid retweet(id="${retweet.id}"): user not exists`);
+      throw new Error(`use whose name is "${userName}" not exists`);
     }
 
-    const tweet = this.findTweetById(retweet.tweetId);
-    if (!tweet) {
-      throw new Error(`invalid retweet(id="${retweet.id}"): tweet not exists`);
-    }
+    const tweets = this.tweets.filter(tweet => tweet.userId === user.id);
 
-    return {
-      id: retweet.id,
-      user,
-      tweet,
-      createdAt: retweet.createdAt
-    };
+    return Promise.resolve(tweets);
   }
 
-  private findTweetById(id: string): entities.Tweet | null {
+  private findTweetById(id: string): entities.ITweet | null {
     const tweet = this.tweets.find(t => t.id === id);
-    return tweet ? this.tweetToEntity(tweet) : null;
+    return tweet || null;
   }
 }

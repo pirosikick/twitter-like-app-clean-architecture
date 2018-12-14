@@ -1,4 +1,4 @@
-import { Retweet } from '@pirosikick/entities';
+import { IRetweet } from '@pirosikick/entities';
 import { IUseCase, IUseCaseFactory } from '../interface';
 
 export interface ICreateRetweetInput {
@@ -9,27 +9,14 @@ export interface ICreateRetweetInput {
 export interface ICreateRetweetOutput {
   retweet: {
     id: string;
-    user: {
-      id: string;
-      name: string;
-      createdAt: Date;
-    };
-    tweet: {
-      id: string;
-      user: {
-        id: string;
-        name: string;
-        createdAt: Date;
-      };
-      text: string;
-      createdAt: Date;
-    };
+    userId: string;
+    tweetId: string;
     createdAt: Date;
   };
 }
 
 export interface IDataAccess {
-  createRetweet: (userId: string, tweetId: string) => Promise<Retweet>;
+  createRetweet: (userId: string, tweetId: string) => Promise<IRetweet>;
 }
 
 export type ICreateRetweet = IUseCase<

@@ -1,9 +1,9 @@
-import { User } from '@pirosikick/entities';
+import { IUser } from '@pirosikick/entities';
 import { IUseCase, IUseCaseFactory } from '../interface';
 
 export interface IDataAccess {
-  findUserByName(name: string): Promise<User | null>;
-  createUser(name: string): Promise<User>;
+  findUserByName(name: string): Promise<IUser | null>;
+  createUser(name: string): Promise<IUser>;
 }
 
 export interface ICreateUserInput {
