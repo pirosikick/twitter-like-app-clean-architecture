@@ -1,16 +1,23 @@
 import * as React from 'react';
-import { connect } from 'react-redux';
-import { RootState } from './reducer';
+import { HashRouter as Router, Route } from 'react-router-dom';
+import { Store } from 'redux';
+import { Provider } from 'react-redux';
+import * as pages from './pages';
 
-interface Props {
-  page: React.ComponentType;
+interface IProps {
+  store: Store;
 }
 
-function Root({ page: Component }: Props) {
-  return <Component />;
-}
+const Root: React.FC<IProps> = props => (
+  <Provider store={props.store}>
+    <Router>
+      <>
+        <Route path="/signin" component={pages.SignIn} />
+        <Route path="/signup" component={pages.SignUp} />
+        <Route path="/" exact component={pages.Timeline} />
+      </>
+    </Router>
+  </Provider>
+);
 
-const mapStateToProps = (state: RootState) => ({
-  page: state.page
-});
-export default connect(mapStateToProps)(Root);
+export default Root;

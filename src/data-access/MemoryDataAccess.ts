@@ -2,15 +2,23 @@ import * as entities from '@pirosikick/entities';
 import * as usecases from '@pirosikick/usecases';
 import uuid from 'uuid/v4';
 
+interface IUserPasswordCredential {
+  userId: string;
+  password: string;
+}
+
 export default class MemoryDataAccess
   implements
     // ユースケースのDetaAccessを実装
+    usecases.signUpWithPassword.IDataAccess,
+    usecases.signInWithPassword.IDataAccess,
     usecases.createTweet.IDataAccess,
     usecases.createRetweet.IDataAccess,
     usecases.getTweets.IDataAccess,
     usecases.createUser.IDataAccess {
   // メモリ上（変数）にデータを保存
   private users: entities.IUser[] = [];
+  private userPasswordCredentials: IUserPasswordCredential[] = [];
   private tweets: entities.ITweet[] = [];
   private retweets: entities.IRetweet[] = [];
 
@@ -86,6 +94,45 @@ export default class MemoryDataAccess
     const tweets = this.tweets.filter(tweet => tweet.userId === user.id);
 
     return Promise.resolve(tweets);
+  }
+
+  public createUserWithPassword(
+    userName: string,
+    password: string
+  ): Promise<entities.IUser> {
+    const user = {
+      id: uuid(),
+      name: userName,
+      createdAt: new Date()
+    };
+    const userPasswordCredential = {
+      userId: user.id,
+      password
+    };
+
+    this.users.push(user);
+    this.userPasswordCredentials.push(userPasswordCredential);
+
+    return Promise.resolve(user);
+  }
+
+  public verifyPassword(
+    userName: string,
+    password: string
+  ): Promise<entities.IUser | null> {
+    const user = this.users.find(u => u.name === userName);
+    if (!user) {
+      return Promise.resolve(null);
+    }
+
+    const credential = this.userPasswordCredentials.find(
+      c => c.userId === user.id
+    );
+    if (!credential) {
+      throw new Error(`the credential whose userId = '${user.id}' not exists`);
+    }
+
+    return Promise.resolve(credential.password === password ? user : null);
   }
 
   private findTweetById(id: string): entities.ITweet | null {
