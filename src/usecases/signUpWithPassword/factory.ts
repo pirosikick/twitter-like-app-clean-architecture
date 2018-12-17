@@ -12,7 +12,7 @@ const signUpWithPasswordFactory: ISignUpWithPasswordFactory = dataAccess => {
     }
 
     // TODO
-    if (input.password.length >= 8) {
+    if (input.password.length < 8) {
       return {
         succeeded: false,
         code: ErrorCode.PASSWORD_INVALID

@@ -3,7 +3,8 @@ export {
   ISignUpWithPassword,
   ISignUpWithPasswordInput,
   ISignUpWithPasswordOutput,
-  ISignUpWithPasswordFactory
+  ISignUpWithPasswordFactory,
+  ErrorCode
 } from './interface';
 export { default as DataAccessError } from './DataAccessError';
 export { default as factory } from './factory';

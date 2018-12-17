@@ -1,8 +1,7 @@
-import { createAction } from 'typesafe-actions';
-import ActionType from './ActionType';
-import { User } from '../types';
+import { IUser } from '../types';
+import { ActionType, ISetUserAction } from './types';
 
-export const setUser = createAction(
-  ActionType.SET_USER,
-  resolve => (user: User) => resolve(user)
-);
+export const setUser = (user: IUser): ISetUserAction => ({
+  type: ActionType.SET_USER,
+  payload: user
+});
