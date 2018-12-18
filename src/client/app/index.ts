@@ -1,5 +1,5 @@
-import * as types from './types';
+import { IAction } from './types';
 import * as actions from './actions';
 import reducer, { IState } from './reducer';
 
-export { types, actions, reducer, IState };
+export { actions, reducer, IState, IAction };

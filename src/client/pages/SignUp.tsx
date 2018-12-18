@@ -3,7 +3,7 @@ import { Redirect } from 'react-router-dom';
 import { connect } from 'react-redux';
 import { Dispatch, bindActionCreators } from 'redux';
 import { signUpWithPassword as usecase } from '@pirosikick/usecases';
-import { IRootState } from '../reducer';
+import { IRootState } from '../types';
 import { actions, operations, IState } from '../signUp';
 
 const errorMessages = {
